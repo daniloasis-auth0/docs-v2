@@ -18,7 +18,7 @@ The **Actions NPM (`@auth0/actions`)** package enables the use of TypeScript dev
 
 Follow the installation and import guidelines described at: [How Actions NPM works](/docs/customize/actions/actions-npm#how-it-works).
 
-To unit test an Action, you must mock the `event` and `api` objects that your Action function receives. You can create these mocks using the TypeScript definitions included in `auth0/actions`, which ensures your tests accurately reflect the production environment. Testing frameworks like Jest are ideal for managing mocking and functionality. 
+To unit test an Action, you must mock the `event` and `api` objects that your Action function receives. You can create these mocks using the TypeScript definitions included in `auth0/actions`, which ensures your tests accurately reflect the production environment. Testing frameworks like Jest are ideal for managing mocking and functionality.
 
 The Unit Tests can be run in a local environment, version control, or CI/CD process, improving the overall quality assurance and validations before impacting changes on Auth0 Tenants.
 
@@ -26,9 +26,9 @@ The Unit Tests can be run in a local environment, version control, or CI/CD proc
 
 ## Examples
 
-The following examples provide validation for a series of scenarios by mocking the necessary objects. 
+The following examples provide validation for a series of scenarios by mocking the necessary objects.
 
-<Note> 
+<Note>
 The examples use **Jest** (`https://www.npmjs.com/package/jest`), but any testing library can be used.
 </Note>
 
@@ -123,7 +123,7 @@ module.exports = {
 </Tab>
 </Tabs>
 
-## Pre-user registration access control and user metadata setup
+### Pre-user registration access control and user metadata setup
 
 The following example Action checks if the user email has a forbidden email domain, and calls `api.access.deny()` when matching. Otherwise, it checks if the full name has being provided through Custom Prompts additional fields and proceeds to set the full name at the user profile `user_metadata`, otherwise sends a validation error to Universal Login.
 
@@ -353,7 +353,7 @@ describe('onExecutePreUserRegistration', () => {
 </Tab>
 </Tabs>
 
-## Custom email provider and HTTP request
+### Custom email provider and HTTP request
 
 The following example Action attempts to send a message via HTTP request to an external service, handling the potential request error to drop the notification. It uses secrets for the external service URL and authorization API Key.
 
