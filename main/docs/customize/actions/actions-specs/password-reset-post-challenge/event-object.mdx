@@ -1,0 +1,159 @@
+---
+description: Learn about the password-reset-post-challenge Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: password-reset-post-challenge - Event Object'
+---
+
+The `event` object for the password-reset-post-challenge Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.authentication</code><br/>
+      </td>
+      <td>
+        Details about authentication obtained during the password reset flow.<br/>
+        <em>{ methods: ({ name: string; timestamp: string; }, { type?: "email", The value "otp", The value "push-notification", The value "recovery-code", The value "phone", The value "webauthn-roaming", The value "webauthn-platform", undefined; name: "mfa"; timestamp: string; })[]; riskAssessment?: { supplemental?: { akamai?: { akamaiBot?: { type?: string, undefined; action?: string, Array of undefined; botcategory?: strings, undefined; botScore?: number, undefined; botScoreResponseSegment?: string, undefined; botnetId?: string, undefined; }, undefined; akamaiUserRisk?: { action?: string, undefined; allow?: number, undefined; emailDomain?: string, Dictionary, undefined; ouid?: string, undefined; requestid?: string, Dictionary, undefined; score?: number, undefined; status?: number, Dictionary, undefined; username?: string, undefined; uuid?: string, undefined; }, undefined; }, undefined; }, undefined; }, Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.authorization</code><br/>
+      </td>
+      <td>
+        An object containing information describing the authorization granted to the user who is logging in.<br/>
+        <em>{ roles: string[]; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client with which this password reset transaction was initiated.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>client_id</code> <em>String</em> — The client id of the application the user is logging in to.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — An object for holding other application properties.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the application (as defined in the Dashboard).
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.connection</code><br/>
+      </td>
+      <td>
+        Details about the Connection that was used to authenticate the user.<br/>
+        <em>Dictionary, undefined; name: string; strategy: string; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.prompt</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Collected data from rendered custom prompts.<br/>
+        <em>Dictionary, Dictionary, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Details about the request that initiated the transaction.<br/>
+        <em>Dictionary, undefined; continentCode?: string, undefined; countryCode?: string, undefined; countryCode3?: string, undefined; countryName?: string, undefined; latitude?: number, undefined; longitude?: number, undefined; subdivisionCode?: string, undefined; subdivisionName?: string, undefined; timeZone?: string, Dictionary, undefined; ip: string; language?: string, Dictionary, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.stats</code><br/>
+      </td>
+      <td>
+        Login statistics for the current user.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>logins_count</code> <em>Number</em> — The number of times this user has logged in.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Details about the Tenant associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.transaction</code><br/>
+      </td>
+      <td>
+        Details about the current transaction.<br/>
+        <em>{ correlation\_id?: string, undefined; locale: string; login\_hint?: string, undefined; state?: string, Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.user</code><br/>
+      </td>
+      <td>
+        An object describing the user on whose behalf the current transaction was initiated.<br/>
+        <em>Dictionary, undefined; email\_verified: boolean; family\_name?: string, undefined; given\_name?: string, undefined; last\_password\_reset?: string, undefined; name?: string, undefined; nickname?: string, undefined; phone\_number?: string, undefined; phone\_verified?: boolean, undefined; picture?: string, Dictionary, Dictionary, Array of dictionarys, undefined; identities: ({ connection?: string, undefined; isSocial?: boolean, Dictionary, undefined; provider?: string, undefined; user\_id?: string, Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

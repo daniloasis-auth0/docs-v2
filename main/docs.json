@@ -673,7 +673,7 @@
                         "pages": [
                           "docs/authenticate/custom-token-exchange",
                           "docs/authenticate/custom-token-exchange/cte-example-use-cases",
-                          "docs/authenticate/custom-token-exchange/configure-custom-token-exchange", 
+                          "docs/authenticate/custom-token-exchange/configure-custom-token-exchange",
                           "docs/authenticate/custom-token-exchange/cte-multi-factor-authentication",
                           "docs/authenticate/custom-token-exchange/cte-attack-protection"
                         ]
@@ -1412,12 +1412,98 @@
                               }
                             ]
                           },
+                          {
+                            "group": "Actions Specs",
+                            "pages": [
+                              {
+                                "group": "Credentials Exchange",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/credentials-exchange/event-object",
+                                  "docs/customize/actions/actions-specs/credentials-exchange/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Custom Email Provider",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/custom-email-provider/event-object",
+                                  "docs/customize/actions/actions-specs/custom-email-provider/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Custom Phone Provider",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/custom-phone-provider/event-object",
+                                  "docs/customize/actions/actions-specs/custom-phone-provider/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Custom Token Exchange",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/custom-token-exchange/event-object",
+                                  "docs/customize/actions/actions-specs/custom-token-exchange/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Event Streams",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/event-streams/event-object",
+                                  "docs/customize/actions/actions-specs/event-streams/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Password Reset Post Challenge",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/password-reset-post-challenge/event-object",
+                                  "docs/customize/actions/actions-specs/password-reset-post-challenge/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Post Change Password",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/post-change-password/event-object",
+                                  "docs/customize/actions/actions-specs/post-change-password/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Post Login",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/post-login/event-object",
+                                  "docs/customize/actions/actions-specs/post-login/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Post User Registration",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/post-user-registration/event-object",
+                                  "docs/customize/actions/actions-specs/post-user-registration/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Pre User Registration",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/pre-user-registration/event-object",
+                                  "docs/customize/actions/actions-specs/pre-user-registration/api-object"
+                                ]
+                              },
+                              {
+                                "group": "Send Phone Message",
+                                "pages": [
+                                  "docs/customize/actions/actions-specs/send-phone-message/event-object",
+                                  "docs/customize/actions/actions-specs/send-phone-message/api-object"
+                                ]
+                              }
+                            ]
+                          },
                           "docs/customize/actions/use-cases",
                           "docs/customize/actions/action-coding-guidelines",
+                          "docs/customize/actions/actions-modules-quickstart",
+                          "docs/customize/actions/actions-modules",
+                          "docs/customize/actions/transaction-metadata",
                           "docs/customize/actions/limitations",
+                          "docs/customize/actions/actions-real-time-logs",
+                          "docs/customize/actions/actions-templates",
                           "docs/customize/actions/actions-npm",
                           "docs/customize/actions/actions-unit-test",
-                          "docs/customize/actions/transaction-metadata",
                           "docs/customize/actions/manage-dependencies",
                           "docs/customize/actions/manage-versions",
                           "docs/customize/actions/test-actions",
@@ -1432,8 +1518,7 @@
                               "docs/customize/actions/migrate/actions-migration-limitations"
                             ]
                           },
-                          "docs/customize/actions/actions-templates",
-                          "docs/customize/actions/actions-real-time-logs"
+                          "docs/customize/actions/advanced-extensibility"
                         ]
                       },
                       {
@@ -3879,7 +3964,7 @@
                               "docs/fr-ca/customize/login-pages/advanced-customizations/configure",
                               "docs/fr-ca/customize/login-pages/advanced-customizations/quickstart",
                               "docs/fr-ca/customize/login-pages/advanced-customizations/development-workflow",
-                              "docs/fr-ca/customize/login-pages/advanced-customizations/deployment-workflow",                              
+                              "docs/fr-ca/customize/login-pages/advanced-customizations/deployment-workflow",
                               {
                                 "group": "Cas d'utilisation",
                                 "pages": [
@@ -4096,8 +4181,11 @@
                           },
                           "docs/fr-ca/customize/actions/use-cases",
                           "docs/fr-ca/customize/actions/action-coding-guidelines",
-                          "docs/fr-ca/customize/actions/limitations",
+                          "docs/fr-ca/customize/actions/actions-modules",
                           "docs/fr-ca/customize/actions/transaction-metadata",
+                          "docs/fr-ca/customize/actions/limitations",
+                          "docs/fr-ca/customize/actions/actions-real-time-logs",
+                          "docs/fr-ca/customize/actions/actions-templates",
                           "docs/fr-ca/customize/actions/manage-dependencies",
                           "docs/fr-ca/customize/actions/manage-versions",
                           "docs/fr-ca/customize/actions/test-actions",
@@ -4110,9 +4198,7 @@
                               "docs/fr-ca/customize/actions/migrate/migrate-from-hooks-to-actions",
                               "docs/fr-ca/customize/actions/migrate/actions-migration-limitations"
                             ]
-                          },
-                          "docs/fr-ca/customize/actions/actions-templates",
-                          "docs/fr-ca/customize/actions/actions-real-time-logs"
+                          }
                         ]
                       },
                       {
@@ -6444,8 +6530,11 @@
                           },
                           "docs/ja-jp/customize/actions/use-cases",
                           "docs/ja-jp/customize/actions/action-coding-guidelines",
-                          "docs/ja-jp/customize/actions/limitations",
+                          "docs/ja-jp/customize/actions/actions-modules",
                           "docs/ja-jp/customize/actions/transaction-metadata",
+                          "docs/ja-jp/customize/actions/limitations",
+                          "docs/ja-jp/customize/actions/actions-real-time-logs",
+                          "docs/ja-jp/customize/actions/actions-templates",
                           "docs/ja-jp/customize/actions/manage-dependencies",
                           "docs/ja-jp/customize/actions/manage-versions",
                           "docs/ja-jp/customize/actions/test-actions",
@@ -6458,9 +6547,7 @@
                               "docs/ja-jp/customize/actions/migrate/migrate-from-hooks-to-actions",
                               "docs/ja-jp/customize/actions/migrate/actions-migration-limitations"
                             ]
-                          },
-                          "docs/ja-jp/customize/actions/actions-templates",
-                          "docs/ja-jp/customize/actions/actions-real-time-logs"
+                          }
                         ]
                       },
                       {

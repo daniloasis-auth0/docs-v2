@@ -1,0 +1,56 @@
+---
+description: Learn about the event-stream Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: event-stream - Event Object'
+---
+
+The `event` object for the event-stream Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>
+        <code>event.message</code><br/>
+      </td>
+      <td>
+        The CloudEvent message containing all event properties.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — Identifies the event.
+          </li>
+          <li>
+            <code>type</code> <em>String</em> — Describes the type of event related to the originating occurrence.
+          </li>
+          <li>
+            <code>data</code> <em>Dictionary</em> — The event payload.
+          </li>
+          <li>
+            <code>source</code> <em>String</em> — Identifies the context in which an event happened.
+          </li>
+          <li>
+            <code>specversion</code> <em>String</em> — The version of the CloudEvents specification which the event uses.
+          </li>
+          <li>
+            <code>time</code> <em>String, null</em> — Timestamp of when the occurrence happened. Must adhere to RFC 3339.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

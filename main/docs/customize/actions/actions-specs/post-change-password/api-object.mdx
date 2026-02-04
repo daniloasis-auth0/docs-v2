@@ -1,0 +1,119 @@
+---
+description: Learn about the post-change-password Action trigger's API object.
+title: 'Actions Triggers: post-change-password - API Object'
+---
+
+The API object for the post-change-password Actions trigger includes:
+
+## `api.cache`
+
+Store and retrieve data that persists across executions.
+
+### `api.cache.delete(key)`
+
+Delete a record describing a cached value at the supplied
+key if it exists.
+
+Returns `CacheDeleteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Parameter description.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.get(key)`
+
+Retrieve a record describing a cached value at the supplied key,
+if it exists. If a record is found, the cached value can be found
+at the `value` property of the returned object.
+
+Returns `CacheRecord | undefined`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Parameter description.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.set(key, value, options)`
+
+Store or update a string value in the cache at the specified key.
+
+Values stored in this cache are scoped to the Trigger in which they
+are set. They are subject to the {link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+Values stored in this way will have lifetimes of _up to_ the specified
+`ttl` or `expires_at` values. If no lifetime is specified, a default of
+lifetime of 24 hours will be used. Lifetimes may not exceed the maximum
+duration listed at {link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+**Important**: This cache is designed for short-lived, ephemeral data. Items may not be
+available in later transactions even if they are within their supplied their lifetime.
+
+Returns `CacheWriteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Parameter description.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>String</em>. Parameter description.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>CacheSetOptions, undefined</em>. Parameter description.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+

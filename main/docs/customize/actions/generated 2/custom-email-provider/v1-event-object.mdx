@@ -1,0 +1,295 @@
+---
+description: Learn about the custom-email-provider Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: custom-email-provider - Event Object'
+---
+
+The `event` object for the custom-email-provider Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client with which this login transaction was initiated.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>client_id</code> <em>String</em> — The client id of the application the user is logging in to.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — An object for holding other application properties.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the application (as defined in the Dashboard).
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.connection</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Connection that was used to authenticate the user.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The connection's unique identifier.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — Metadata associated with the connection.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the connection used to authenticate the user (such as `twitter` or `some-g-suite-domain`).
+          </li>
+          <li>
+            <code>strategy</code> <em>String</em> — The type of connection. For social connections, `event.connection.strategy === event.connection.name`. For enterprise connections, the strategy is `waad` (Windows Azure AD), `ad` (Active Directory/LDAP), `auth0` (database connections), and so on.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>domain</code> <em>String</em> — The custom domain name.
+          </li>
+          <li>
+            <code>domain_metadata</code> <em>Dictionary</em> — Custom domain metadata as key-value pairs.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.notification</code><br/>
+      </td>
+      <td>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>from</code> <em>String</em> — Email address of the sender for the email.
+          </li>
+          <li>
+            <code>html</code> <em>String</em> — Rendered HTML template.
+          </li>
+          <li>
+            <code>locale</code> <em>String</em> — The locale we rendered the message in, example `en_US`, as defined in the BCP-47 specification.
+          </li>
+          <li>
+            <code>message_type</code> <em>String</em> — The type of message that is being send, like `verify_email` or `welcome_email`.<br/>
+            Possible values include:
+            <ul>
+              <li><code>verify_email</code></li>
+              <li><code>verify_email_by_code</code></li>
+              <li><code>reset_email</code></li>
+              <li><code>reset_email_by_code</code></li>
+              <li><code>welcome_email</code></li>
+              <li><code>verification_code</code></li>
+              <li><code>mfa_oob_code</code></li>
+              <li><code>enrollment_email</code></li>
+              <li><code>blocked_account</code></li>
+              <li><code>stolen_credentials</code></li>
+              <li><code>try_provider_configuration_email</code></li>
+              <li><code>organization_invitation</code></li>
+            </ul>
+          </li>
+          <li>
+            <code>subject</code> <em>String</em> — Subject to be attached to the email.
+          </li>
+          <li>
+            <code>text</code> <em>String</em> — Rendered text template.
+          </li>
+          <li>
+            <code>to</code> <em>String</em> — Email address of the recipient.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The Organization identifier.
+          </li>
+          <li>
+            <code>display_name</code> <em>String</em> — The friendly name of the Organization.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — Metadata associated with the Organization.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the Organization.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>geoip</code> <em>Dictionary</em><br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>cityName</code> <em>String</em>
+              </li>
+              <li>
+                <code>continentCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryCode3</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryName</code> <em>String</em>
+              </li>
+              <li>
+                <code>latitude</code> <em>Number</em>
+              </li>
+              <li>
+                <code>longitude</code> <em>Number</em>
+              </li>
+              <li>
+                <code>subdivisionCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>subdivisionName</code> <em>String</em>
+              </li>
+              <li>
+                <code>timeZone</code> <em>String</em>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>hostname</code> <em>String</em> — The hostname that is being used for the authentication flow.
+          </li>
+          <li>
+            <code>ip</code> <em>String</em> — The originating IP address of the request.
+          </li>
+          <li>
+            <code>query</code> <em>Dictionary</em> — The query string parameters sent to the authorization request.
+          </li>
+          <li>
+            <code>user_agent</code> <em>String</em> — The value of the `User-Agent` header received when initiating the transaction.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+          <li>
+            <code>friendly_name</code> <em>String</em> — The friendly name for the tenant, usually a more human-readable version of the ID.
+          </li>
+          <li>
+            <code>home_url</code> <em>String</em> — The home URL for the tenant, if defined and as found in its settings.
+          </li>
+          <li>
+            <code>logo_url</code> <em>String</em> — The logo URL for the tenant, if defined and as found in its settings.
+          </li>
+          <li>
+            <code>support_email</code> <em>String</em> — The email to the tenant's support service, if defined and as found in its settings.
+          </li>
+          <li>
+            <code>support_url</code> <em>String</em> — The url to the tenant's support service, if defined and as found in its settings.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.user</code><br/>
+      </td>
+      <td>
+        An object describing the user on whose behalf the current transaction was initiated.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>app_metadata</code> <em>Dictionary</em> — Custom fields that store info about a user that influences the user's access, such as support plan, security roles, or access control groups.
+          </li>
+          <li>
+            <code>email</code> <em>String</em> — (unique) User's email address.
+          </li>
+          <li>
+            <code>email_verified</code> <em>Boolean</em> — Indicates whether the user has verified their email address.<br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>valueOf</code> <em>() => boolean</em> — Returns the primitive value of the specified object.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>family_name</code> <em>String</em> — User's family name.
+          </li>
+          <li>
+            <code>given_name</code> <em>String</em> — User's given name.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — User's full name.
+          </li>
+          <li>
+            <code>nickname</code> <em>String</em> — User's nickname.
+          </li>
+          <li>
+            <code>picture</code> <em>String</em> — URL pointing to the [user's profile picture](https://auth0.com/docs/users/change-user-picture).
+          </li>
+          <li>
+            <code>user_id</code> <em>String</em> — (unique) User's unique identifier.
+          </li>
+          <li>
+            <code>user_metadata</code> <em>Dictionary</em> — Custom fields that store info about a user that does not impact what they can or cannot access, such as work address, home address, or user preferences.
+          </li>
+          <li>
+            <code>username</code> <em>String</em> — (unique) User's username.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

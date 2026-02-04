@@ -1,0 +1,563 @@
+---
+description: Learn about the password-reset-post-challenge Action trigger's API object.
+title: 'Actions Triggers: password-reset-post-challenge - API Object'
+---
+
+The API object for the password-reset-post-challenge Actions trigger includes:
+
+## `api.access`
+
+Modify the access of the user that is attempting to reset their password.
+
+### `api.access.deny(reason)`
+
+Mark the current password reset attempt as denied. This will prevent the end-user from completing
+the password reset flow. This will *NOT* cancel other user-related side-effects
+requested by this Action. The password reset flow will immediately stop following the
+completion of this action and no further Actions will be executed.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reason</code></td>
+<td>
+<p>
+<em>String</em>. A human-readable explanation for rejecting the password reset. This may be presented
+directly in end-user interfaces.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.authentication`
+
+Request changes to the authentication state of the current user's session.
+
+### `api.authentication.challengeWith(factor, options)`
+
+Request a challenge for multifactor authentication using the supplied factor and optional additional factors.
+
+When a multifactor challenge is requested, subsequent Actions will not be run until that challenge has been
+fulfilled by the user. A user will have satisfied the challenge in any of the following situations:
+
+1. They successfully complete the challenge for the default factor.
+2. They successfully complete the challenge for any of the optional factors described in `additionalFactors`.
+
+If any of the factors requested has already been challenged successfully in the current transaction, it will
+be ignored.
+
+If a factor is requested is not enabled on the tenant, it will be ignored. If a factor is requested that the user
+has not enrolled, it will be ignored. If none of the requested factors is enabled or enrolled, the authentication
+transaction will fail (i.e. login will not complete).
+
+_**Note**: This method will result in a factor challenge screen being shown if the user has not already satisfied
+the requirements of the challenge. If `additionalFactors` are supplied, the user will have the option to
+select another factor if they choose to._
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factor</code></td>
+<td>
+<p>
+<em>FactorSelector</em>. An object describing the type of factor its options that should be used for the initial challenge.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>factor.type</code></td>
+<td>
+<p>
+<em>The value "email", The value "otp", The value "recovery-code", The value "webauthn-roaming", The value "webauthn-platform"</em>. A type of authentication factor such as `push-notification`, `phone`, `email`, `otp`, `webauthn-roaming`, `webauthn-platform`, and `recovery-code`.
+          </p>
+<p>Supported values include:</p>
+<ul>
+<li><code>email</code></li>
+<li><code>otp</code></li>
+<li><code>recovery-code</code></li>
+<li><code>webauthn-roaming</code></li>
+<li><code>webauthn-platform</code></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><code>factor.options</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Additional options for configuring a factor of a given type.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>ChallengeWithOptions</em>. Additional options which can also specify `additionalFactors` as a property.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.additionalFactors</code></td>
+<td>
+<p>
+<em>Array of objects</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.challengeWithAny(factors)`
+
+Request a challenge for multifactor authentication using any of the supplied factors (showing a factor selection
+screen first).
+
+When a multifactor challenge is requested, subsequent Actions will not be run until that challenge has been
+fulfilled by the user. A user will have satisfied the challenge in any of the following situations:
+
+1. They successfully complete the challenge for any of the factors.
+
+If any of the factors requested has already been challenged successfully in the current transaction, it will
+be ignored.
+
+If a factor is requested is not enabled on the tenant, it will be ignored. If a factor is requested that the user
+has not enrolled, it will be ignored. If none of the requested factors is enabled or enrolled, the authentication
+transaction will fail (i.e. login will not complete).
+
+_**Note**: This method will result in the factor selector screen being shown if the user has not already satisfied
+the requirements of the challenge. If there is a preferred factor, the `api.authentication.challengeWith()` method
+is preferred. The factor selector screen will not be shown if only one factor is passed in or is valid._
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factors</code></td>
+<td>
+<p>
+<em>Array of objects</em>. An array of factors.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.redirect`
+
+Configure and initiate external redirects.
+
+### `api.redirect.encodeToken(options)`
+
+Create a session token suitable for using as a query string parameter redirect target (via `sendUserTo`)
+that contains data whose authenticity must be provable by the target endpoint. The target endpoint
+can verify the authenticity and integrity of the data by checking the JWT's signature
+using a shared secret.
+
+The shared secret should be stored as a **secret** of the Action and will be readable at
+`event.secrets['<secret_name>']`.
+
+Returns `string`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>TokenCreationOptions</em>. Configure how sensitive data is encoded into the query parameters of the
+resulting url.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.expiresInSeconds</code></td>
+<td>
+<p>
+<em>Number</em>. Number of seconds before this token will expire
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.payload</code></td>
+<td>
+<p>
+<em>Dictionary</em>. The data intended to be passed to the target of the redirect and whose authenticity
+and integrity must be provable.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.secret</code></td>
+<td>
+<p>
+<em>String</em>. A secret that will be used to sign a JWT that is shared with the redirect target. The
+secret value should be stored as a **secret** and retrieved using
+`event.secrets['<secret_name>']`.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.redirect.sendUserTo(url, options)`
+
+Cause the password reset pipeline to trigger a browser redirect to the target `url` immediately after
+this action completes. The `createUrl` helper method is provided to simplify encoding
+data as a query parameter in the target `url` such that the data's authenticity and
+integrity can be verified by the target endpoint.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>SendUserToOptions</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.query</code></td>
+<td>
+<p>
+<em>Dictionary</em>. An object representing additional query string parameters that should be appended to
+the redirect URL.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.redirect.validateToken(options)`
+
+Retrieve the data encoded in a JWT token passed to the `/continue` endpoint while verifying
+the authenticity and integrity of that data.
+
+Returns `any`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>ValidateSessionTokenOptions</em>. Options for retrieving the data encoded in a JWT token passed to the
+`/continue` endpoint following a rediret.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.secret</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.tokenParameterName</code></td>
+<td>
+<p>
+<em>String</em>. The name of the query or body parameter that was sent to the /continue endpoint.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.cache`
+
+Make changes to the cache.
+
+### `api.cache.delete(key)`
+
+Delete a record describing a cached value at the supplied
+key if it exists.
+
+Returns `CacheDeleteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the cache record to delete.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.get(key)`
+
+Retrieve a record describing a cached value at the supplied key,
+if it exists. If a record is found, the cached value can be found
+at the `value` property of the returned object.
+
+Returns `CacheRecord | undefined`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the record stored in the cache.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.set(key, value, options)`
+
+Store or update a string value in the cache at the specified key.
+
+Values stored in this cache are scoped to the Trigger in which they
+are set. They are subject to the {@link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+Values stored in this way will have lifetimes of _up to_ the specified
+`ttl` or `expires_at` values. If no lifetime is specified, a default of
+lifetime of 24 hours will be used. Lifetimes may not exceed the maximum
+duration listed at {@link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+**Important**: This cache is designed for short-lived, ephemeral data. Items may not be
+available in later transactions even if they are within their supplied their lifetime.
+
+Returns `CacheWriteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the record to be stored.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>String</em>. The value of the record to be stored.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>CacheSetOptions</em>. Options for adjusting cache behavior.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.expires_at</code></td>
+<td>
+<p>
+<em>Number</em>. The absolute expiry time in milliseconds since the unix epoch.
+While cached records may be evicted earlier, they will
+never remain beyond the the supplied `expires_at`.
+
+*Note*: This value should not be supplied if a value was also
+provided for `ttl`. If both options are supplied, the
+earlier expiry of the two will be used.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.ttl</code></td>
+<td>
+<p>
+<em>Number</em>. The time-to-live value of this cache entry in milliseconds.
+While cached values may be evicted earlier, they will
+never remain beyond the the supplied `ttl`.
+
+*Note*: This value should not be supplied if a value was also
+provided for `expires_at`. If both options are supplied, the
+earlier expiry of the two will be used.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.prompt`
+
+Renders a custom prompt.
+
+### `api.prompt.render(promptId, promptOptions)`
+
+Renders a custom prompt.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>promptId</code></td>
+<td>
+<p>
+<em>String</em>. The prompt ID.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>promptOptions</code></td>
+<td>
+<p>
+<em>PromptOptions</em>. The render options.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>promptOptions.fields</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Key-value pairs to populate field values (client-side).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>promptOptions.vars</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Key-value pairs to inject variables (server-side).
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.transaction`
+
+Configure the transaction.
+
+### `api.transaction.setResultUrl(url, options)`
+
+Set the URL that the user should be redirected to after the password reset.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>
+<p>
+<em>String</em>. The URL to redirect the user to.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>ResultUrlOptions</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.query</code></td>
+<td>
+<p>
+<em>Dictionary</em>. The query parameters to include in the URL.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>

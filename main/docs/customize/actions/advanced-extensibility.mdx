@@ -1,0 +1,70 @@
+---
+title: "Advanced Extensibility"
+sidebarTitle: "Advanced Extensibility"
+description: "High-scale customization and increased resource limits for Enterprise-grade identity workflows."
+---
+
+## Overview
+
+The **Advanced Extensibility SKU** is a premium add-on for Auth0 Enterprise customers. It is designed for organizations with complex identity requirements that exceed the standard limits of [Auth0 Actions](https://auth0.com/docs/customize/actions), Rules, and Hooks.
+
+This SKU provides higher execution thresholds, increased secret storage, and enhanced isolation for custom code execution, ensuring that your identity pipeline scales with your most demanding applications.
+
+<Info>
+  The Advanced Extensibility SKU requires an existing Enterprise subscription. Contact your Account Executive to enable these features in your tenant.
+</Info>
+
+## Key Capabilities
+
+<CardGroup cols={2}>
+  <Card title="Extended Execution Time" icon="clock">
+    Increase the maximum execution duration for Auth0 Actions to handle complex external API orchestrations.
+  </Card>
+  <Card title="Increased Secret Limits" icon="key">
+    Store and manage a higher number of secrets and environment variables for cross-service authentication.
+  </Card>
+  <Card title="Enhanced Concurrency" icon="bolt">
+    Higher throughput for concurrent Action executions during peak traffic events.
+  </Card>
+  <Card title="Advanced Log Streaming" icon="transmission-tower">
+    Unlock deeper observability into extensibility performance and error rates.
+  </Card>
+</CardGroup>
+
+## Resource Comparison
+
+The following table outlines the resource lift provided by the Advanced Extensibility SKU compared to standard Enterprise limits.
+
+| Feature | Standard Enterprise | Advanced Extensibility |
+| :--- | :--- | :--- |
+| **Actions Execution Time** | Up to 10 seconds | Up to 20 seconds* |
+| **Secrets per Action** | 10 | 50+ |
+| **Action Dependencies** | 10 | 25+ |
+| **Custom Domains** | Included | Enhanced Support |
+| **Private SaaS Support** | Optional | Native Compatibility |
+
+<i style={{ fontSize: '12px' }}>*Actual limits may vary based on specific contract terms and deployment region.</i>
+
+## Use Cases
+
+### 1. Complex User Migration
+Perform "Lazy Migration" from legacy databases where the password hashing or data enrichment requires high-latency calls to on-premise systems.
+
+### 2. Multi-Factor Orchestration
+Integrate with 3rd-party risk engines (e.g., LexisNexis, BioCatch) that require intensive data processing or multiple round-trips before allowing a login.
+
+### 3. Real-time Data Enrichment
+Query multiple external CRMs (Salesforce, HubSpot) and ERPs during the login flow to inject granular custom claims into the ID Token without fear of execution timeouts.
+
+## Technical Implementation
+
+When the Advanced Extensibility SKU is active, no code changes are required to your existing Actions. The underlying infrastructure automatically adjusts the runtime quotas.
+
+### Checking SKU Status
+
+You can verify your current limits via the [Management API](/api-reference/management/v2/get-tenants-settings):
+
+```bash
+curl --request GET \
+  --url 'https://YOUR_DOMAIN/api/v2/tenants/settings' \
+  --header 'authorization: Bearer YOUR_ACCESS_TOKEN'

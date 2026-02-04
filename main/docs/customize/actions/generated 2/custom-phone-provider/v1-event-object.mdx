@@ -1,0 +1,348 @@
+---
+description: Learn about the custom-phone-provider Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: custom-phone-provider - Event Object'
+---
+
+The `event` object for the custom-phone-provider Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client with which this login transaction was initiated.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>client_id</code> <em>String</em> — The client id of the application the user is logging in to.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — An object for holding other application properties.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the application (as defined in the Dashboard).
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.connection</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Connection that was used to authenticate the user.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The connection's unique identifier.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — Metadata associated with the connection.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the connection used to authenticate the user (such as `twitter` or `some-g-suite-domain`).
+          </li>
+          <li>
+            <code>strategy</code> <em>String</em> — The type of connection. For social connections, `event.connection.strategy === event.connection.name`. For enterprise connections, the strategy is `waad` (Windows Azure AD), `ad` (Active Directory/LDAP), `auth0` (database connections), and so on.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>domain</code> <em>String</em> — The custom domain name.
+          </li>
+          <li>
+            <code>domain_metadata</code> <em>Dictionary</em> — Custom domain metadata as key-value pairs.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.notification</code><br/>
+      </td>
+      <td>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>as_text</code> <em>String</em> — The text, as we rendered it, ready to be delivered as a text message.
+          </li>
+          <li>
+            <code>as_voice</code> <em>String</em> — The text, as we rendered it, ready to be delivered as a voicetext message.
+          </li>
+          <li>
+            <code>code</code> <em>String</em> — The One Time Password that we drawn for this message for some types (e.g. `otp_verify`, `otp_enroll`). If provided, it is important to have it conveyed to the end-user.
+          </li>
+          <li>
+            <code>delivery_method</code> <em>String</em> — The way the message should be delivered. Could be `text` or `voice`.<br/>
+            Possible values include:
+            <ul>
+              <li><code>text</code></li>
+              <li><code>voice</code></li>
+            </ul>
+          </li>
+          <li>
+            <code>from</code> <em>String</em> — The E.164 compliant phone number for the sender.
+          </li>
+          <li>
+            <code>locale</code> <em>String</em> — The locale we rendered the message in, example `en_US`, as defined in the BCP-47 specification.
+          </li>
+          <li>
+            <code>message_type</code> <em>String</em> — The type of message that is being send, like `otp_verify` or `blocked_account`.<br/>
+            Possible values include:
+            <ul>
+              <li><code>otp_verify</code></li>
+              <li><code>otp_enroll</code></li>
+              <li><code>blocked_account</code></li>
+              <li><code>change_password</code></li>
+              <li><code>password_breach</code></li>
+            </ul>
+          </li>
+          <li>
+            <code>recipient</code> <em>String</em> — The E.164 compliant phone number for the recipient.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The Organization identifier.
+          </li>
+          <li>
+            <code>display_name</code> <em>String</em> — The friendly name of the Organization.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — Metadata associated with the Organization.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the Organization.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Details about the request that initiated the transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>geoip</code> <em>Dictionary</em><br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>cityName</code> <em>String</em>
+              </li>
+              <li>
+                <code>continentCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryCode3</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryName</code> <em>String</em>
+              </li>
+              <li>
+                <code>latitude</code> <em>Number</em>
+              </li>
+              <li>
+                <code>longitude</code> <em>Number</em>
+              </li>
+              <li>
+                <code>subdivisionCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>subdivisionName</code> <em>String</em>
+              </li>
+              <li>
+                <code>timeZone</code> <em>String</em>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>hostname</code> <em>String</em> — The hostname that is being used for the authentication flow.
+          </li>
+          <li>
+            <code>ip</code> <em>String</em> — The originating IP address of the request.
+          </li>
+          <li>
+            <code>language</code> <em>String</em> — The language requested by the browser.
+          </li>
+          <li>
+            <code>method</code> <em>String</em> — The HTTP method used for the request.
+          </li>
+          <li>
+            <code>user_agent</code> <em>String</em> — The value of the `User-Agent` header received when initiating the transaction.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+          <li>
+            <code>friendly_name</code> <em>String</em> — The friendly name for the tenant, usually a more human-readable version of the ID.
+          </li>
+          <li>
+            <code>home_url</code> <em>String</em> — The home URL for the tenant, if defined and as found in its settings.
+          </li>
+          <li>
+            <code>logo_url</code> <em>String</em> — The logo URL for the tenant, if defined and as found in its settings.
+          </li>
+          <li>
+            <code>support_email</code> <em>String</em> — The email to the tenant's support service, if defined and as found in its settings.
+          </li>
+          <li>
+            <code>support_url</code> <em>String</em> — The url to the tenant's support service, if defined and as found in its settings.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.user</code><br/>
+      </td>
+      <td>
+        An object describing the user on whose behalf the current transaction was initiated.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>app_metadata</code> <em>Dictionary</em> — Custom fields that store info about a user that influences the user's access, such as support plan, security roles, or access control groups.
+          </li>
+          <li>
+            <code>created_at</code> <em>String</em> — Timestamp indicating when the user profile was first created.
+          </li>
+          <li>
+            <code>email</code> <em>String</em> — (unique) User's email address.
+          </li>
+          <li>
+            <code>email_verified</code> <em>Boolean</em> — Indicates whether the user has verified their email address.<br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>valueOf</code> <em>() => boolean</em> — Returns the primitive value of the specified object.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>family_name</code> <em>String</em> — User's family name.
+          </li>
+          <li>
+            <code>given_name</code> <em>String</em> — User's given name.
+          </li>
+          <li>
+            <code>last_password_reset</code> <em>String</em> — Timestamp indicating the last time the user's password was reset/changed. At user creation, this field does not exist. This property is only available for Database connections.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — User's full name.
+          </li>
+          <li>
+            <code>nickname</code> <em>String</em> — User's nickname.
+          </li>
+          <li>
+            <code>phone_number</code> <em>String</em> — User's phone number.
+          </li>
+          <li>
+            <code>phone_verified</code> <em>Boolean</em> — Indicates whether the user has verified their phone number.<br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>valueOf</code> <em>() => boolean</em> — Returns the primitive value of the specified object.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>picture</code> <em>String</em> — URL pointing to the [user's profile picture](https://auth0.com/docs/users/change-user-picture).
+          </li>
+          <li>
+            <code>updated_at</code> <em>String</em> — Timestamp indicating when the user's profile was last updated/modified.
+          </li>
+          <li>
+            <code>user_id</code> <em>String</em> — (unique) User's unique identifier.
+          </li>
+          <li>
+            <code>user_metadata</code> <em>Dictionary</em> — Custom fields that store info about a user that does not impact what they can or cannot access, such as work address, home address, or user preferences.
+          </li>
+          <li>
+            <code>username</code> <em>String</em> — (unique) User's username.
+          </li>
+          <li>
+            <code>identities</code> <em>Dictionary</em> — Contains info retrieved from the identity provider with which the user originally authenticates. Users may also link their profile to multiple identity providers; those identities will then also appear in this array. The contents of an individual identity provider object varies by provider.<br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>connection</code> <em>String</em> — Name of the Auth0 connection used to authenticate the user.
+              </li>
+              <li>
+                <code>isSocial</code> <em>Boolean</em> — Indicates whether the connection is a social one.<br/>
+                Includes the following properties:
+                <ul>
+                  <li>
+                    <code>valueOf</code> <em>() => boolean</em> — Returns the primitive value of the specified object.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <code>profileData</code> <em>Dictionary</em> — User information associated with the connection. When profiles are linked, it is populated with the associated user info for secondary accounts.
+              </li>
+              <li>
+                <code>provider</code> <em>String</em> — Name of the entity that is authenticating the user, such as Facebook, Google, SAML, or your own provider.
+              </li>
+              <li>
+                <code>user_id</code> <em>String</em> — User's unique identifier for this connection/provider.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

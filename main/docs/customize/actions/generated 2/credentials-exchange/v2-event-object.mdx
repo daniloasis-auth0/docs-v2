@@ -1,0 +1,216 @@
+---
+description: Learn about the credentials-exchange Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: credentials-exchange - Event Object'
+---
+
+The `event` object for the credentials-exchange Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.accessToken</code><br/>
+      </td>
+      <td>
+        Information about the access token to be issued.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>customClaims</code> <em>Dictionary</em>
+          </li>
+          <li>
+            <code>scope</code> <em>Array of strings</em>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client used during this token exchange.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>client_id</code> <em>String</em> — The client id of the application the user is logging in to.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — An object for holding other application properties.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the application (as defined in the Dashboard).
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>domain</code> <em>String</em> — The custom domain name.
+          </li>
+          <li>
+            <code>domain_metadata</code> <em>Dictionary</em> — Custom domain metadata as key-value pairs.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The Organization identifier.
+          </li>
+          <li>
+            <code>display_name</code> <em>String</em> — The friendly name of the Organization.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — Metadata associated with the Organization.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the Organization.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Details about the request that initiated the transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>body</code> <em>Dictionary</em> — The body of the POST request. This data will only be available during refresh token, Client Credential Exchange flows and PreUserRegistration Action.
+          </li>
+          <li>
+            <code>geoip</code> <em>Dictionary</em><br/>
+            Includes the following properties:
+            <ul>
+              <li>
+                <code>cityName</code> <em>String</em>
+              </li>
+              <li>
+                <code>continentCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryCode3</code> <em>String</em>
+              </li>
+              <li>
+                <code>countryName</code> <em>String</em>
+              </li>
+              <li>
+                <code>latitude</code> <em>Number</em>
+              </li>
+              <li>
+                <code>longitude</code> <em>Number</em>
+              </li>
+              <li>
+                <code>subdivisionCode</code> <em>String</em>
+              </li>
+              <li>
+                <code>subdivisionName</code> <em>String</em>
+              </li>
+              <li>
+                <code>timeZone</code> <em>String</em>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>hostname</code> <em>String</em> — The hostname that is being used for the authentication flow.
+          </li>
+          <li>
+            <code>ip</code> <em>String</em> — The originating IP address of the request.
+          </li>
+          <li>
+            <code>language</code> <em>String</em> — The language requested by the browser.
+          </li>
+          <li>
+            <code>method</code> <em>String</em> — The HTTP method used for the request.
+          </li>
+          <li>
+            <code>user_agent</code> <em>String</em> — The value of the `User-Agent` header received when initiating the transaction.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.resource_server</code><br/>
+      </td>
+      <td>
+        Information about the Resource Server that is issuing the access token.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>identifier</code> <em>String</em> — The identifier of the resource server. For example: `https://your-api.example.com`.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Information about the Tenant used during this token exchange.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.transaction</code><br/>
+      </td>
+      <td>
+        Information about the Credentials Exchange transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>correlation_id</code> <em>String</em> — Correlation ID can be provided in the initial authentication request when the application redirects to Universal Login. You can use value to correlate logs and requests from your Action code with the user flow.
+          </li>
+          <li>
+            <code>requested_scopes</code> <em>Array of strings</em> — The scopes specified (if any) when requesting the access token.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

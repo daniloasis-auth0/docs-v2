@@ -1,0 +1,110 @@
+---
+description: Learn about the custom-email-provider Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: custom-email-provider - Event Object'
+---
+
+The `event` object for the custom-email-provider Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client with which this login transaction was initiated.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>client_id</code> <em>String</em> — The client id of the application the user is logging in to.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — An object for holding other application properties.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the application (as defined in the Dashboard).
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.connection</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Connection that was used to authenticate the user.<br/>
+        <em>Dictionary, undefined; name: string; strategy: string; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.notification</code><br/>
+      </td>
+      <td>
+        <em>{ from: string; html: string; locale: string; message\_type: "verify\_email", The value "verify\_email\_by\_code", The value "reset\_email", The value "reset\_email\_by\_code", The value "welcome\_email", The value "verification\_code", The value "mfa\_oob\_code", The value "enrollment\_email", The value "blocked\_account", The value "stolen\_credentials", The value "try\_provider\_configuration\_email", "organization\_invitation"; subject: string; text: string; to: string; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        <em>{ geoip?: ({ cityName?: string, undefined; continentCode?: string, undefined; countryCode?: string, undefined; countryCode3?: string, undefined; countryName?: string, undefined; latitude?: number, undefined; longitude?: number, undefined; subdivisionCode?: string, undefined; subdivisionName?: string, undefined; timeZone?: string, Dictionary, undefined; hostname?: string, undefined; ip?: string, Dictionary, undefined; user\_agent?: string, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        <em>{ id: string; friendly\_name?: string, undefined; home\_url?: string, undefined; logo\_url?: string, undefined; support\_email?: string, undefined; support\_url?: string, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.user</code><br/>
+      </td>
+      <td>
+        An object describing the user on whose behalf the current transaction was initiated.<br/>
+        <em>Dictionary, undefined; email\_verified: boolean; family\_name?: string, undefined; given\_name?: string, undefined; name?: string, undefined; nickname?: string, undefined; picture?: string, Dictionary, Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

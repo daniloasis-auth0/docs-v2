@@ -1,0 +1,122 @@
+---
+description: Learn about the credentials-exchange Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: credentials-exchange - Event Object'
+---
+
+The `event` object for the credentials-exchange Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>
+        <code>event.accessToken</code><br/>
+      </td>
+      <td>
+        Information about the access token to be issued.<br/>
+        <em>Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client used during this token exchange.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>client_id</code> <em>String</em> — The client id of the application the user is logging in to.
+          </li>
+          <li>
+            <code>metadata</code> <em>Dictionary</em> — An object for holding other application properties.
+          </li>
+          <li>
+            <code>name</code> <em>String</em> — The name of the application (as defined in the Dashboard).
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Details about the request that initiated the transaction.<br/>
+        <em>Dictionary, undefined; continentCode?: string, undefined; countryCode?: string, undefined; countryCode3?: string, undefined; countryName?: string, undefined; latitude?: number, undefined; longitude?: number, undefined; subdivisionCode?: string, undefined; subdivisionName?: string, undefined; timeZone?: string, Dictionary, undefined; ip: string; language?: string, undefined; method: string; user\_agent?: string, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.resource_server</code><br/>
+      </td>
+      <td>
+        Information about the Resource Server that is issuing the access token.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>identifier</code> <em>String</em> — The identifier of the resource server. For example: `https://your-api.example.com`.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Information about the Tenant used during this token exchange.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.transaction</code><br/>
+      </td>
+      <td>
+        Information about the Credentials Exchange transaction.<br/>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

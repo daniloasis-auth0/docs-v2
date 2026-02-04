@@ -1,0 +1,533 @@
+---
+description: Learn about the custom-token-exchange Action trigger's API object.
+title: 'Actions Triggers: custom-token-exchange - API Object'
+---
+
+The API object for the custom-token-exchange Actions trigger includes:
+
+## `api.access`
+
+Modify the access of the token exchange request, such as rejecting the request.
+
+### `api.access.deny(code, reason)`
+
+Mark the current token exchange as denied.
+
+If the request is being denied due to an invalid subject token, we recommend that api.access.rejectInvalidSubjectToken be used instead,
+to distinguish between brute force attempts on the subject token, and other reasons to deny the request.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td>
+<p>
+<em>String</em>. The error code justifying the rejection of the token exchange. Can be invalid_request, server_error, or any custom code
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>
+<p>
+<em>String</em>. A human-readable explanation for rejecting the token exchange request.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.access.rejectInvalidSubjectToken(reason)`
+
+Mark the provided subject token from the request as invalid. This will cause the request to be
+rejected with an "invalid_request" error code.
+
+This will signal to the Attack Protection features that an invalid subject token has been provided,
+so that protections to prevent brute force attacks on the subject token can be applied.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reason</code></td>
+<td>
+<p>
+<em>String</em>. A human-readable explanation for rejecting the token exchange request.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.authentication`
+
+Indicate the result of the authentication of the subject token, to specify the user whom tokens will be issued for.
+
+### `api.authentication.setUserById(user_id)`
+
+Indicate the user corresponding to the subject_token, by providing the userId. The token exchange request will issue tokens for this user.
+This must be an existing user.
+Note: Exactly one of api.authentication.setUserByConnection api.authentication.setUserById must be called by the Custom Token Exchange action.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user_id</code></td>
+<td>
+<p>
+<em>String</em>. The ID of the user; must be an existing user.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.setUserByConnection(connection_name, user_attributes, options)`
+
+Indicate the user corresponding to the subject_token, by providing a connection and user attributes.
+The token exchange request will issue tokens for this user.
+
+This can be either an existing user, or a new user. If the user does not exist, it will be created.
+The user_id property of the user_profile will be used to determine if the user already exists.
+
+Note: Exactly one of api.authentication.setUserByConnection api.authentication.setUserById must be called by the Custom Token Exchange action.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>connection_name</code></td>
+<td>
+<p>
+<em>String</em>. Name of the connection the user should be stored in.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes</code></td>
+<td>
+<p>
+<em>SetUserByConnectionUserAttributes</em>. The user's profile attributes, including user_id, and optionally other attributes such as email, name, etc.
+
+The user_id field is required, and should be the unique identifier of the user within the connection;
+this will be used to determine if the user exists or should be created. In existing users, this user_id
+can be found by inspecting the identities array of the normalized user profile.
+
+If the user already exists, the following user attributes cannot be updated: email, email_verified, phone, phone_verified, username.
+If these do not match the existing user, an error will be returned.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.email</code></td>
+<td>
+<p>
+<em>String</em>. The user's email.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.email_verified</code></td>
+<td>
+<p>
+<em>Boolean</em>. Whether this email address is verified (true) or unverified (false). User will receive a verification email after creation if email_verified is false or not specified.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.family_name</code></td>
+<td>
+<p>
+<em>String</em>. The user's family name(s).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.given_name</code></td>
+<td>
+<p>
+<em>String</em>. The user's given name(s).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.name</code></td>
+<td>
+<p>
+<em>String</em>. The user's full name.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.nickname</code></td>
+<td>
+<p>
+<em>String</em>. The user's nickname.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.phone_number</code></td>
+<td>
+<p>
+<em>String</em>. The user's phone number (following the E.164 recommendation).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.phone_verified</code></td>
+<td>
+<p>
+<em>Boolean</em>. Whether this phone number has been verified (true) or not (false).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.picture</code></td>
+<td>
+<p>
+<em>String</em>. A URI pointing to the user's picture.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.user_id</code></td>
+<td>
+<p>
+<em>String</em>. The user's unique identifier within the connection.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.username</code></td>
+<td>
+<p>
+<em>String</em>. The user's username.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>user_attributes.verify_email</code></td>
+<td>
+<p>
+<em>Boolean</em>. Whether the user will receive a verification email after creation (true) or no email (false). Overrides behavior of email_verified parameter.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>SetUserByConnectionOptions</em>. Options to control the behavior of the setUserByConnection command.
+
+- `creationBehavior` - behavior to apply if no user with the specified user_id exists in the connection.
+Can be 'create_if_not_exists', which will cause a new user to be created using the supplied user attributes;
+or 'none', which will result in no user being created and an error being returned if no user exists.
+
+- `updateBehavior` - Behavior to apply if a user with specified user_id already exists in the connection.
+Can be 'replace', which results in the existing user's attributes being replaced with the specified
+user attributes; or 'none' which means the existing user will not be modified.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.creationBehavior</code></td>
+<td>
+<p>
+<em>The value "create\_if\_not\_exists", The value "none"</em>. Behaviour to apply if no user with the specified user_id exists in the connection. Can be 'create_if_not_exists', which will cause a new user to be created using the supplied user attributes; or 'none', which will result in no user being created and an error being returned if no user exists.
+          </p>
+<p>Supported values include:</p>
+<ul>
+<li><code>create_if_not_exists</code></li>
+<li><code>none</code></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><code>options.updateBehavior</code></td>
+<td>
+<p>
+<em>The value "none", The value "replace"</em>. Behaviour to apply if a user with specified user_id already exists in the connection. Can be 'replace', which results in the existing user's attributes being replaced with the specified user attributes; or 'none' which means the existing user will not be modified.
+          </p>
+<p>Supported values include:</p>
+<ul>
+<li><code>none</code></li>
+<li><code>replace</code></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.setOrganization(organization_id_or_name)`
+
+Set the organization for the user associated with the token exchange.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>organization_id_or_name</code></td>
+<td>
+<p>
+<em>String</em>. The ID or name of the organization to set for the user.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.user`
+
+Request changes to the user corresponding to the subject token.
+
+### `api.user.setAppMetadata(key, value)`
+
+Set application-specific metadata for the user corresponding to the subject token.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The metadata property to be set.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>unknown</em>. The value of the metadata property. This may be set to `null` to remove the
+metadata property.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.user.setUserMetadata(key, value)`
+
+Set general metadata for the user corresponding to the subject token.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The metadata property to be set.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>unknown</em>. The value of the metadata property. This may be set to `null` to remove the
+metadata property.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.cache`
+
+Store and retrieve data that persists across executions.
+
+### `api.cache.delete(key)`
+
+Delete a record describing a cached value at the supplied
+key if it exists.
+
+Returns `CacheDeleteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the cache record to delete.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.get(key)`
+
+Retrieve a record describing a cached value at the supplied key,
+if it exists. If a record is found, the cached value can be found
+at the `value` property of the returned object.
+
+Returns `CacheRecord | undefined`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the record stored in the cache.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.set(key, value, options)`
+
+Store or update a string value in the cache at the specified key.
+
+Values stored in this cache are scoped to the Trigger in which they
+are set. They are subject to the {@link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+Values stored in this way will have lifetimes of _up to_ the specified
+`ttl` or `expires_at` values. If no lifetime is specified, a default of
+lifetime of 24 hours will be used. Lifetimes may not exceed the maximum
+duration listed at {@link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+**Important**: This cache is designed for short-lived, ephemeral data. Items may not be
+available in later transactions even if they are within their supplied their lifetime.
+
+Returns `CacheWriteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the record to be stored.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>String</em>. The value of the record to be stored.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>CacheSetOptions</em>. Options for adjusting cache behavior.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.expires_at</code></td>
+<td>
+<p>
+<em>Number</em>. The absolute expiry time in milliseconds since the unix epoch.
+While cached records may be evicted earlier, they will
+never remain beyond the the supplied `expires_at`.
+
+*Note*: This value should not be supplied if a value was also
+provided for `ttl`. If both options are supplied, the
+earlier expiry of the two will be used.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.ttl</code></td>
+<td>
+<p>
+<em>Number</em>. The time-to-live value of this cache entry in milliseconds.
+While cached values may be evicted earlier, they will
+never remain beyond the the supplied `ttl`.
+
+*Note*: This value should not be supplied if a value was also
+provided for `expires_at`. If both options are supplied, the
+earlier expiry of the two will be used.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>

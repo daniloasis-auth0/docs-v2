@@ -1,0 +1,201 @@
+---
+description: Learn about the post-login Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: post-login - Event Object'
+---
+
+The `event` object for the post-login Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.authentication</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about authentication signals obtained during the login flow.<br/>
+        <em>{ methods: ({ name: string; timestamp: string; }, { type?: "email", The value "otp", The value "push-notification", The value "recovery-code", The value "phone", The value "webauthn-roaming", The value "webauthn-platform", undefined; name: "mfa"; timestamp: string; })[]; riskAssessment?: { assessments: { ImpossibleTravel?: { code: "minimal\_travel\_from\_last\_login", The value "travel\_from\_last\_login", The value "substantial\_travel\_from\_last\_login", The value "impossible\_travel\_from\_last\_login", The value "invalid\_travel", The value "missing\_geoip", The value "anonymous\_proxy", The value "unknown\_location", The value "initial\_login", The value "location\_history\_not\_found", The value "assessment\_not\_available"; confidence: "low", The value "medium", The value "high", "neutral"; }, undefined; NewDevice?: { code: "initial\_login", The value "assessment\_not\_available", The value "match", The value "partial\_match", The value "no\_match", The value "unknown\_device", The value "no\_device\_history"; confidence: "low", The value "medium", The value "high", The value "neutral"; details?: { device?: "known", The value "unknown", undefined; useragent?: "known", The value "unknown", undefined; }, undefined; }, undefined; UntrustedIP?: { code: "assessment\_not\_available", The value "not\_found\_on\_deny\_list", The value "found\_on\_deny\_list", The value "invalid\_ip\_address"; confidence: "low", The value "medium", The value "high", "neutral"; details?: { category?: string, undefined; ip?: string, undefined; matches?: string, undefined; source?: string, undefined; }, undefined; }, undefined; }; confidence: "low", The value "medium", The value "high", "neutral"; supplemental?: { akamai?: ({ akamaiBot?: { type?: string, undefined; action?: string, Array of undefined; botcategory?: strings, undefined; botScore?: number, undefined; botScoreResponseSegment?: string, undefined; botnetId?: string, undefined; }, undefined; akamaiUserRisk?: { action?: string, undefined; allow?: number, undefined; emailDomain?: string, Dictionary, undefined; ouid?: string, undefined; requestid?: string, Dictionary, undefined; score?: number, undefined; status?: number, Dictionary, undefined; username?: string, undefined; uuid?: string, undefined; }, Dictionary, undefined; }, undefined; version: string; }, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.authorization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        An object containing information describing the authorization granted to the user who is logging in.<br/>
+        <em>{ roles: string[]; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+      </td>
+      <td>
+        Information about the Client with which this login transaction was initiated.<br/>
+        <em>Dictionary, Array of undefined; scope?: strings, Array of undefined; }s, undefined; }, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.connection</code><br/>
+      </td>
+      <td>
+        Details about the Connection that was used to authenticate the user.<br/>
+        <em>Dictionary, undefined; name: string; strategy: string; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.organization</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the Organization associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.prompt</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Collected data from rendered custom prompts.<br/>
+        <em>Dictionary, Dictionary, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.refresh_token</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        [Enterprise Customers] The current refresh token.<br/>
+        <em>{ id: string; client\_id?: string, undefined; created\_at: string; device?: { initial\_asn?: string, undefined; initial\_ip?: string, undefined; initial\_user\_agent?: string, undefined; last\_asn?: string, undefined; last\_ip?: string, undefined; last\_user\_agent?: string, undefined; }, undefined; expires\_at?: string, undefined; idle\_expires\_at?: string, undefined; last\_exchanged\_at?: string, Array of undefined; resource\_servers?: { audience: string; scopes: string; }s, undefined; rotating?: boolean, undefined; session\_id?: string, undefined; session\_transfer?: { parent\_refresh\_token?: { id?: string, undefined; }, undefined; }, undefined; user\_id?: string, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Details about the request that initiated the transaction.<br/>
+        <em>{ asn?: string, Dictionary, undefined; continentCode?: string, undefined; countryCode?: string, undefined; countryCode3?: string, undefined; countryName?: string, undefined; latitude?: number, undefined; longitude?: number, undefined; subdivisionCode?: string, undefined; subdivisionName?: string, undefined; timeZone?: string, Dictionary, undefined; ip: string; language?: string, Dictionary, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.resource_server</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the resource server to which the access is being requested.<br/>
+        <em>{ identifier: string; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.security_context</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        An object containing fingerprint signatures. This will be available only if the client is using cloudflare. The JA3/JA4 fingerprint can be null or empty in some cases. The most common case is for HTTP requests because JA3 and JA4 are calculated in TLS. It can also be empty due to the Worker sending requests within the same zone or to a zone that is not proxied (or a third party).<br/>
+        <em>{ ja3?: string, undefined; ja4?: string, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.session</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        The current login session.<br/>
+        <em>{ id: string; authenticated\_at?: string, Array of undefined; clients?: { client\_id: string; }s, undefined; cookie?: { mode: "persistent", "non-persistent"; }, undefined; created\_at?: string, undefined; device?: { initial\_asn?: string, undefined; initial\_ip?: string, undefined; initial\_user\_agent?: string, undefined; last\_asn?: string, undefined; last\_ip?: string, undefined; last\_user\_agent?: string, undefined; }, undefined; expires\_at?: string, undefined; idle\_expires\_at?: string, undefined; last\_interacted\_at?: string, Dictionary, undefined; session\_transfer?: { parent\_refresh\_token?: { id?: string, Dictionary, undefined; }, undefined; }, undefined; updated\_at?: string, undefined; user\_id?: string, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.session_transfer_token</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        [Private Early Access] Details of the current session transfer token being used to establish Single Sign-On (SSO) from a native application to a web application.<br/>
+        <em>{ client\_id: string; request: { asn?: string, undefined; geoip?: ({ cityName?: string, undefined; continentCode?: string, undefined; countryCode?: string, undefined; countryCode3?: string, undefined; countryName?: string, undefined; latitude?: number, undefined; longitude?: number, undefined; subdivisionCode?: string, undefined; subdivisionName?: string, undefined; timeZone?: string, Dictionary, undefined; ip: string; user\_agent?: string, undefined; }; scope: string[]; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.stats</code><br/>
+      </td>
+      <td>
+        Login statistics for the current user.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>logins_count</code> <em>Number</em> — The number of times this user has logged in.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Details about the Tenant associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.transaction</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the current transaction.<br/>
+        <em>({ id?: string, Array of undefined; acr\_values?: strings, undefined; linking\_id?: string, undefined; locale?: string, undefined; login\_hint?: string, Array of undefined; prompt?: strings, undefined; protocol?: "oidc-basic-profile", The value "oidc-ciba", The value "oidc-ciba-web-link", The value "oidc-implicit-profile", The value "oauth2-device-code", The value "oauth2-resource-owner", The value "oauth2-resource-owner-jwt-bearer", The value "oauth2-password", The value "oauth2-webauthn", The value "oauth2-access-token", The value "oauth2-refresh-token", The value "oauth2-token-exchange", The value "oidc-hybrid-profile", The value "samlp", The value "wsfed", The value "wstrust-usernamemixed", undefined; redirect\_uri?: string, Array of dictionarys, Array of undefined; requested\_scopes?: strings, undefined; response\_mode?: "query", The value "fragment", The value "form\_post", The value "web\_message", undefined; response\_type?: ("code", The value "token", Array of "id\_token")s, undefined; state?: string, Array of undefined; ui\_locales?: strings, undefined; correlation\_id?: string, Dictionary, Number, Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.user</code><br/>
+      </td>
+      <td>
+        An object describing the user on whose behalf the current transaction was initiated.<br/>
+        <em>Dictionary, undefined; email\_verified: boolean; family\_name?: string, undefined; given\_name?: string, undefined; last\_password\_reset?: string, undefined; name?: string, undefined; nickname?: string, undefined; phone\_number?: string, undefined; phone\_verified?: boolean, undefined; picture?: string, Dictionary, Dictionary, Array of dictionarys, Array of undefined; multifactor?: strings, undefined; identities: ({ connection?: string, undefined; isSocial?: boolean, Dictionary, undefined; provider?: string, undefined; user\_id?: string, Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

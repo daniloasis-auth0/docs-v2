@@ -1,0 +1,2120 @@
+---
+description: Learn about the post-login Action trigger's API object.
+title: 'Actions Triggers: post-login - API Object'
+---
+
+The API object for the post-login Actions trigger includes:
+
+## `api.access`
+
+Modify the access of the user that is logging in, such as rejecting the login attempt.
+
+### `api.access.deny(reason)`
+
+Mark the current login attempt as denied. This will prevent the end-user from completing
+the login flow. This will *NOT* cancel other user-related side-effects (such as metadata
+changes) requested by this Action. The login flow will immediately stop following the
+completion of this action and no further Actions will be executed.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reason</code></td>
+<td>
+<p>
+<em>String</em>. A human-readable explanation for rejecting the login. This may be presented
+directly in end-user interfaces.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.accessToken`
+
+Request changes to the access token being issued.
+
+### `api.accessToken.setCustomClaim(key, value)`
+
+Set a custom claim on the Access Token that will be issued upon completion of the login flow.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Name of the claim (note that this may need to be a fully-qualified url).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>unknown</em>. The value of the claim.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.accessToken.addScope(scope)`
+
+Add a scope on the Access Token that will be issued upon completion of the login flow.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scope</code></td>
+<td>
+<p>
+<em>String</em>. The scope to be added.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.accessToken.removeScope(scope)`
+
+Remove a scope on the Access Token that will be issued upon completion of the login flow.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scope</code></td>
+<td>
+<p>
+<em>String</em>. The scope to be removed.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.authentication`
+
+Request changes to the authentication state of the current user's session.
+
+### `api.authentication.challengeWith(factor, options)`
+
+Request a challenge for multifactor authentication using the supplied factor and optional additional factors.
+
+When a multifactor challenge is requested, subsequent Actions will not be run until that challenge has been
+fulfilled by the user. A user will have satisfied the challenge in any of the following situations:
+
+1. They successfully complete the challenge for the default factor.
+2. They successfully complete the challenge for any of the optional factors described in `additionalFactors`.
+
+If any of the factors requested has already been challenged successfully in the current transaction, it will
+be ignored.
+
+If a factor is requested is not enabled on the tenant, it will be ignored. If a factor is requested that the user
+has not enrolled, it will be ignored. If none of the requested factors is enabled or enrolled, the authentication
+transaction will fail (i.e. login will not complete).
+
+_**Note**: This method will result in a factor challenge screen being shown if the user has not already satisfied
+the requirements of the challenge. If `additionalFactors` are supplied, the user will have the option to
+select another factor if they choose to._
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factor</code></td>
+<td>
+<p>
+<em>FactorSelector</em>. An object describing the type of factor its options that should be used for the initial challenge.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>factor.type</code></td>
+<td>
+<p>
+<em>The value "email", The value "otp", The value "recovery-code", The value "webauthn-roaming", The value "webauthn-platform"</em>. A type of authentication factor such as `push-notification`, `phone`, `email`, `otp`, `webauthn-roaming`, `webauthn-platform`, and `recovery-code`.
+          </p>
+<p>Supported values include:</p>
+<ul>
+<li><code>email</code></li>
+<li><code>otp</code></li>
+<li><code>recovery-code</code></li>
+<li><code>webauthn-roaming</code></li>
+<li><code>webauthn-platform</code></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><code>factor.options</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Additional options for configuring a factor of a given type.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>ChallengeWithOptions</em>. Additional options which can also specify `additionalFactors` as a property.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.additionalFactors</code></td>
+<td>
+<p>
+<em>Array of objects</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.challengeWithAny(factors)`
+
+Request a challenge for multifactor authentication using any of the supplied factors (showing a factor selection
+screen first).
+
+When a multifactor challenge is requested, subsequent Actions will not be run until that challenge has been
+fulfilled by the user. A user will have satisfied the challenge in any of the following situations:
+
+1. They successfully complete the challenge for any of the factors.
+
+If any of the factors requested has already been challenged successfully in the current transaction, it will
+be ignored.
+
+If a factor is requested is not enabled on the tenant, it will be ignored. If a factor is requested that the user
+has not enrolled, it will be ignored. If none of the requested factors is enabled or enrolled, the authentication
+transaction will fail (i.e. login will not complete).
+
+_**Note**: This method will result in the factor selector screen being shown if the user has not already satisfied
+the requirements of the challenge. If there is a preferred factor, the `api.authentication.challengeWith()` method
+is preferred. The factor selector screen will not be shown if only one factor is passed in or is valid._
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factors</code></td>
+<td>
+<p>
+<em>Array of objects</em>. An array of factors.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.enrollWith(factor, options)`
+
+Request an enrollment for multifactor authentication using the supplied factor and optional additional factors.
+
+When a multifactor enrollment is requested, subsequent Actions will not be run until that enrollment has been
+fulfilled by the user.
+
+If any of the factors requested has already been enrolled or challenged successfully in the current transaction, it will
+be ignored.
+
+If a factor that is not enabled in the tenant is requested, it will be ignored.
+If a factor that the user has already enrolled is requested, it will be ignored.
+If none of the requested factors is enabled and not enrolled, the authentication
+transaction will fail (i.e. login will not complete).
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factor</code></td>
+<td>
+<p>
+<em>EnrollmentFactorSelector</em>. An object describing the type of factor that should be used for the initial enrollment prompts and its options.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>factor.type</code></td>
+<td>
+<p>
+<em>The value "otp", The value "push-notification", The value "recovery-code", The value "webauthn-roaming", The value "webauthn-platform", The value "push"</em>. A type of authentication factor such as `push-notification`, `phone`, `otp`, `webauthn-roaming`, `webauthn-platform`, and `recovery-code`.
+          </p>
+<p>Supported values include:</p>
+<ul>
+<li><code>otp</code></li>
+<li><code>push-notification</code></li>
+<li><code>recovery-code</code></li>
+<li><code>webauthn-roaming</code></li>
+<li><code>webauthn-platform</code></li>
+<li><code>push</code></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><code>factor.options</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Additional options for configuring a factor of a given type.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>EnrollWithOptions</em>. Additional options which can also specify `additionalFactors` as a property.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.additionalFactors</code></td>
+<td>
+<p>
+<em>Array of objects</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.enrollWithAny(factors)`
+
+Request an enrollment for multifactor authentication using any of the supplied factors (showing a factor selection
+screen first).
+
+When a multifactor enrollment is requested, subsequent Actions will not be run until that enrollment has been
+fulfilled by the user.
+
+If any of the factors requested has already been enrolled successfully in the current transaction, it will
+be ignored.
+
+If a factor that is not enabled in the tenant is requested, it will be ignored.
+If a factor that the user has already enrolled is requested, it will be ignored.
+If none of the requested factors is enabled and not enrolled, the authentication
+transaction will fail (i.e. login will not complete).
+
+_**Note**: If there is a preferred factor, the `api.authentication.enrollWith()` method
+is preferred. The factor selector screen will not be shown if only one factor is passed in or is valid._
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>factors</code></td>
+<td>
+<p>
+<em>Array of objects</em>. An array of additional factors.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.recordMethod(provider_url)`
+
+Indicate that a custom authentication method has been completed in the current
+session. This method will then be available in the `event.authentication.methods`
+array in subsequent logins.
+
+**IMPORTANT**: This API is only available from within the `onContinuePostLogin`
+function for `PostLogin` Actions. In other words, this may be used to record the
+completion of a custom authentication method after redirecting the user via
+`api.redirect.sendUserTo()`.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>provider_url</code></td>
+<td>
+<p>
+<em>String</em>. An `http:` or `https:` URL that uniquely represents the completed
+authentication method.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.authentication.setPrimaryUser(primary_user_id)`
+
+Change the primary user for the login transaction.
+
+In scenarios that require linking users, the user identity used to initiate the login may no longer
+exist as a discrete user. That identity may now be a secondary identity of an existing user. In
+such situations, the `setPrimaryUser()` function can be used to indicate that the subject of the
+login should be changed.
+
+**IMPORTANT**: Insecurely linking accounts can allow malicious actors to access legitimate
+user accounts.
+
+**IMPORTANT**: The identity used to authenticate the login _must_ be among the secondary identities
+of the user referenced by `primary_user_id`. The login will fail and tokens will not be issued
+otherwise.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_user_id</code></td>
+<td>
+<p>
+<em>String</em>. The user ID of the user for whom tokens should be issued (the `sub` claim).
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.idToken`
+
+Request changes to the ID token being issued.
+
+### `api.idToken.setCustomClaim(key, value)`
+
+Set a custom claim on the ID Token that will be issued upon completion of the login flow.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Name of the claim (note that this may need to be a fully-qualified url).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>unknown</em>. The value of the claim.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.multifactor`
+
+Set or remove the requirement for multifactor authentication on the login attempt.
+
+### `api.multifactor.enable(provider, options)`
+
+Enable multifactor authentication for this login flow. When enabled, users must complete the
+configured multifactor challenge. The actual multifactor challenge will be deferred to the
+end of the login flow.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>provider</code></td>
+<td>
+<p>
+<em>T</em>. The name of the multifactor provider to use or the value `"any"` to use any
+of the configured providers.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>EnableMultifactorOptions<T></em>. Additional options for enabling multifactor challenges.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.allowRememberBrowser</code></td>
+<td>
+<p>
+<em>Boolean</em>. When provider is set to `google-authenticator` or `duo`, the user is prompted for MFA once
+every 30 days. When provider is set to `guardian`, the MFA prompt displays the enrollment
+checkbox for users to choose whether or not to enroll. Defaults to `false`. To learn more,
+read [Customize Multi-Factor Authentication Pages](https://auth0.com/docs/secure/multi-factor-authentication/customize-mfa).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.providerOptions</code></td>
+<td>
+<p>
+<em>Object</em>. Additional options to configure the challenge, only available for the `duo` provider.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.redirect`
+
+Configure and initiate external redirects.
+
+### `api.redirect.encodeToken(options)`
+
+Create a session token suitable for using as a query string parameter redirect target (via `sendUserTo`)
+that contains data whose authenticity must be provable by the target endpoint. The target endpoint
+can verify the authenticity and integrity of the data by checking the JWT's signature
+using a shared secret.
+
+The shared secret should be stored as a **secret** of the Action and will be readable at
+`event.secrets['<secret_name>']`.
+
+Returns `string`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>TokenCreationOptions</em>. Configure how sensitive data is encoded into the query parameters of the
+resulting url.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.expiresInSeconds</code></td>
+<td>
+<p>
+<em>Number</em>. Number of seconds before this token will expire
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.payload</code></td>
+<td>
+<p>
+<em>Dictionary</em>. The data intended to be passed to the target of the redirect and whose authenticity
+and integrity must be provable.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.secret</code></td>
+<td>
+<p>
+<em>String</em>. A secret that will be used to sign a JWT that is shared with the redirect target. The
+secret value should be stored as a **secret** and retrieved using
+`event.secrets['<secret_name>']`.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.redirect.sendUserTo(url, options)`
+
+Cause the login pipeline to trigger a browser redirect to the target `url` immediately after
+this action completes. The `createUrl` helper method is provided to simplify encoding
+data as a query parameter in the target `url` such that the data's authenticity and
+integrity can be verified by the target endpoint.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>SendUserToOptions</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.query</code></td>
+<td>
+<p>
+<em>Dictionary</em>. An object representing additional query string parameters that should be appended to
+the redirect URL.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.redirect.canRedirect()`
+
+Indicates if the current transaction is eligibile for a user redirect. Certain protocols such
+as `oauth2-resource-owner`, `oauth2-refresh-token` do not support
+redirecting the user. A request with `prompt=none` is also not eligible for a redirect.
+
+Returns `boolean`.
+
+### `api.redirect.validateToken(options)`
+
+Retrieve the data encoded in a JWT token passed to the `/continue` endpoint while verifying
+the authenticity and integrity of that data.
+
+Returns `any`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>ValidateSessionTokenOptions</em>. Options for retrieving the data encoded in a JWT token passed to the
+`/continue` endpoint following a rediret.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.secret</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.tokenParameterName</code></td>
+<td>
+<p>
+<em>String</em>. The name of the query or body parameter that was sent to the /continue endpoint.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.user`
+
+Make changes to the metadata of the user that is logging in.
+
+### `api.user.setAppMetadata(key, value)`
+
+Set application-specific metadata for the user that is logging in.
+
+Note: This method should not be used in callbacks. Invoking this method won't update the metadata immediately.
+You can call this several times throughout multiple actions of the same flow and the engine will aggregate the
+changes and update the metadata at once before the flow is completed. This function works only with metadata that
+are in the object format.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The metadata property to be set.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>unknown</em>. The value of the metadata property. This may be set to `null` to remove the
+metadata property.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.user.setUserMetadata(key, value)`
+
+Set general metadata for the user that is logging in.
+
+Note: This method should not be used in callbacks. Invoking this method won't update the metadata immediately.
+You can call this several times throughout multiple actions of the same flow and the engine will aggregate the
+changes and update the metadata at once before the flow is completed. This function works only with metadata that
+are in the object format.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The metadata property to be set.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>unknown</em>. The value of the metadata property. This may be set to `null` to remove the
+metadata property.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.cache`
+
+Make changes to the cache.
+
+### `api.cache.delete(key)`
+
+Delete a record describing a cached value at the supplied
+key if it exists.
+
+Returns `CacheDeleteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the cache record to delete.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.get(key)`
+
+Retrieve a record describing a cached value at the supplied key,
+if it exists. If a record is found, the cached value can be found
+at the `value` property of the returned object.
+
+Returns `CacheRecord | undefined`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the record stored in the cache.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.cache.set(key, value, options)`
+
+Store or update a string value in the cache at the specified key.
+
+Values stored in this cache are scoped to the Trigger in which they
+are set. They are subject to the {@link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+Values stored in this way will have lifetimes of _up to_ the specified
+`ttl` or `expires_at` values. If no lifetime is specified, a default of
+lifetime of 24 hours will be used. Lifetimes may not exceed the maximum
+duration listed at {@link https://auth0.com/docs/customize/actions/limitations Actions Cache Limits}.
+
+**Important**: This cache is designed for short-lived, ephemeral data. Items may not be
+available in later transactions even if they are within their supplied their lifetime.
+
+Returns `CacheWriteResult`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the record to be stored.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>String</em>. The value of the record to be stored.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>CacheSetOptions</em>. Options for adjusting cache behavior.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.expires_at</code></td>
+<td>
+<p>
+<em>Number</em>. The absolute expiry time in milliseconds since the unix epoch.
+While cached records may be evicted earlier, they will
+never remain beyond the the supplied `expires_at`.
+
+*Note*: This value should not be supplied if a value was also
+provided for `ttl`. If both options are supplied, the
+earlier expiry of the two will be used.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.ttl</code></td>
+<td>
+<p>
+<em>Number</em>. The time-to-live value of this cache entry in milliseconds.
+While cached values may be evicted earlier, they will
+never remain beyond the the supplied `ttl`.
+
+*Note*: This value should not be supplied if a value was also
+provided for `expires_at`. If both options are supplied, the
+earlier expiry of the two will be used.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.samlResponse`
+
+Configure custom SAML configurations and attributes.
+
+### `api.samlResponse.setAttribute(attribute, value)`
+
+Set attributes on the SAML assertion being issued to the authenticated user.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attribute</code></td>
+<td>
+<p>
+<em>String</em>. The SAML attribute to be set.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>SAMLAttributeValue</em>. The value of the SAML claim. Setting this value to `null` or
+`undefined` will remove the claim from the assertion.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setAudience(audience)`
+
+Audience of the SAML assertion.
+Default is issuer on SAMLRequest.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>audience</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setRecipient(recipient)`
+
+Recipient of the SAML assertion (SubjectConfirmationData).
+Default is AssertionConsumerUrl on SAMLRequest or callback URL if no SAMLRequest was sent.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>recipient</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setCreateUpnClaim(createUpnClaim)`
+
+Whether or not a UPN claim should be created. Default is true.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createUpnClaim</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setPassthroughClaimsWithNoMapping(passthroughClaimsWithNoMapping)`
+
+If true (default), for each claim that is not mapped to the common profile, Auth0 passes through those in the output assertion.
+If false, those claims won't be mapped.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>passthroughClaimsWithNoMapping</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setMapUnknownClaimsAsIs(mapUnknownClaimsAsIs)`
+
+If passthroughClaimsWithNoMapping is true and this is false (default), for each claim not mapped to the common profile Auth0 adds a prefix http://schema.auth0.com.
+If true it will pass through the claim as-is.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mapUnknownClaimsAsIs</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setMapIdentities(mapIdentities)`
+
+If true (default), it adds more information in the token such as the provider (Google, ADFS, AD, etc.) and the access token, if available.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mapIdentities</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setSignatureAlgorithm(signatureAlgorithm)`
+
+Signature algorithm to sign the SAML assertion or response.
+Default is rsa-sha256.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signatureAlgorithm</code></td>
+<td>
+<p>
+<em>The value "rsa-sha256"</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setSignatureAlgorithm(signatureAlgorithm)`
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signatureAlgorithm</code></td>
+<td>
+<p>
+<em>The value "rsa-sha1"</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setDigestAlgorithm(digestAlgorithm)`
+
+Digest algorithm to calculate digest of the SAML assertion or response.
+Default is sha256.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>digestAlgorithm</code></td>
+<td>
+<p>
+<em>The value "sha256"</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setDigestAlgorithm(digestAlgorithm)`
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>digestAlgorithm</code></td>
+<td>
+<p>
+<em>The value "sha1"</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setDestination(destination)`
+
+Destination of the SAML response. If not specified, it will be AssertionConsumerUrl of SAMLRequest or callback URL if there was no SAMLRequest.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>destination</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setLifetimeInSeconds(lifetimeInSeconds)`
+
+Expiration of the token.
+Default is 3600 seconds (1 hour).
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lifetimeInSeconds</code></td>
+<td>
+<p>
+<em>Number</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setSignResponse(signResponse)`
+
+Whether or not the SAML response should be signed.
+By default the SAML assertion will be signed, but not the SAML response.
+If true, SAML Response will be signed instead of SAML assertion.
+Default to false.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signResponse</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setNameIdentifierFormat(nameIdentifierFormat)`
+
+Default is urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nameIdentifierFormat</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setNameIdentifierProbes(nameIdentifierProbes)`
+
+Auth0 will try each of the attributes of this array in order.
+If one of them has a value, it will use that for the Subject/NameID.
+
+The order is:
+  - http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier (mapped from user_id),
+  - http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress (mapped from email),
+  - http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name (mapped from name).
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nameIdentifierProbes</code></td>
+<td>
+<p>
+<em>Array of strings</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setAuthnContextClassRef(authnContextClassRef)`
+
+Default is urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authnContextClassRef</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setSigningCert(signingCert)`
+
+Optionally indicates the public key certificate used to validate SAML requests.
+If set, SAML requests will be required to be signed.
+A sample value would be "-----BEGIN CERTIFICATE-----\nMIIC8jCCAdqgAwIBAgIJObB6jmhG0QIEMA0GCSqGSIb3DQEBBQUAMCAxHjAcBgNV\n[..all the other lines..]-----END CERTIFICATE-----\n".
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signingCert</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setIncludeAttributeNameFormat(includeAttributeNameFormat)`
+
+When set to true, we infer the NameFormat based on the attribute name. NameFormat values are urn:oasis:names:tc:SAML:2.0:attrname-format:uri, urn:oasis:names:tc:SAML:2.0:attrname-format:basic and urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified.
+If set to false, the attribute NameFormat is not set in the assertion.
+Default is true.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>includeAttributeNameFormat</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setTypedAttributes(typedAttributes)`
+
+When set to true, we infer the xs:type of the element. Types are xs:string, xs:boolean, xs:double and xs:anyType.
+When set to false all xs:type are xs:anyType.
+Default is true.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>typedAttributes</code></td>
+<td>
+<p>
+<em>Boolean</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setEncryptionCert(encryptionCert)`
+
+Optionally specify a certificate used to encrypt the SAML assertion.
+The certificate should be obtained from the service provider.
+Both the certificate and public key must be specified.
+A sample value would be "-----BEGIN CERTIFICATE-----\nMIIC8jCCAdqgAwIBAgIJObB6jmhG0QIEMA0GCSqGSIb3DQEBBQUAMCAxHjAcBgNV\n[..all the other lines..]-----END CERTIFICATE-----\n".
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>encryptionCert</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setEncryptionPublicKey(encryptionPublicKey)`
+
+Optionally specify a public key used to encrypt the SAML assertion.
+The public key should be obtained from the service provider.
+Both the public key and certificate must be specified.
+A sample value would be "-----BEGIN PUBLIC KEY-----\nnMIIC8jCCAdqgAwIBAgIJObB6jmhG0QIEMA0GCSqGSIb3DQEBBQUAMCAxHjAcBgNV\n[..all the other lines..]-----END PUBLIC KEY-----\n".
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>encryptionPublicKey</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setCert(cert)`
+
+By default, Auth0 will use the private/public key pair assigned to your tenant to sign SAML responses or assertions.
+For very specific scenarios, you might wish to provide your own certificate and private key.
+
+Both the certificate and private key must be specified.
+A sample value would be "-----BEGIN CERTIFICATE-----\nMIIC8jCCAdqgAwIBAgIJObB6jmhG0QIEMA0GCSqGSIb3DQEBBQUAMCAxHjAcBgNV\n[..all the other lines..]-----END CERTIFICATE-----\n".
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cert</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setKey(key)`
+
+By default, Auth0 will use the private/public key pair assigned to your tenant to sign SAML responses or assertions.
+For very specific scenarios, you might wish to provide your own certificate and private key.
+
+Since this private key is sensitive, **we recommend using the Add Secret functionality of Actions**.
+See here for more details: https://auth0.com/docs/customize/actions/write-your-first-action#add-a-secret
+
+Both the certificate and private key must be specified.
+A sample value would be "-----BEGIN PRIVATE KEY-----\nnMIIC8jCCAdqgAwIBAgIJObB6jmhG0QIEMA0GCSqGSIb3DQEBBQUAMCAxHjAcBgNV\n[..all the other lines..]-----END PRIVATE KEY-----\n".
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setRelayState(relayState)`
+
+Optionally specify a RelayState used to return to service provider
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>relayState</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.samlResponse.setIssuer(issuer)`
+
+Optionally specify the issuer of the SAML assertion.
+Default is urn:auth0:TENANT
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>issuer</code></td>
+<td>
+<p>
+<em>String</em>.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.validation`
+
+Prevent user from logging in by throwing a validation error.
+
+### `api.validation.error(errorCode, errorMessage)`
+
+Throw an error when there is a validation error.
+
+Returns a reference to the `api` object.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>errorCode</code></td>
+<td>
+<p>
+<em>String</em>. A customer defined error code for the validation error.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>errorMessage</code></td>
+<td>
+<p>
+<em>String</em>. A customer defined message for the validation error.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.rules`
+
+Identify if a rule has been executed in the current transaction.
+
+### `api.rules.wasExecuted(ruleId)`
+
+Check whether a Rule with a specific ID has been executed in the current transaction.
+
+Returns `boolean`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ruleId</code></td>
+<td>
+<p>
+<em>String</em>. The Rule ID.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.prompt`
+
+Renders a custom prompt.
+
+### `api.prompt.render(promptId, promptOptions)`
+
+Renders a custom prompt.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>promptId</code></td>
+<td>
+<p>
+<em>String</em>. The prompt ID.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>promptOptions</code></td>
+<td>
+<p>
+<em>PromptOptions</em>. The render options.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>promptOptions.fields</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Key-value pairs to populate field values (client-side).
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>promptOptions.vars</code></td>
+<td>
+<p>
+<em>Dictionary</em>. Key-value pairs to inject variables (server-side).
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.refreshToken`
+
+Request changes to the current user's refresh token.
+
+### `api.refreshToken.revoke(reason)`
+
+[Enterprise Customers] Revoke the current user refresh token and mark the current refresh token exchange attempt as denied. This will prevent
+the end-user from completing the refresh token exchange flow and revoke the currently used refresh token.
+The refresh token exchange flow will immediately stop following the completion of this action and no further Actions will be executed.
+
+This method can be used only during Refresh Token Exchange flow, when `event.transaction.protocol === "oauth2-refresh-token"`.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reason</code></td>
+<td>
+<p>
+<em>String</em>. A human-readable explanation for rejecting the refresh token exchange. This may be presented
+directly in end-user interfaces.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.refreshToken.setExpiresAt(absolute)`
+
+[Enterprise Customers] Sets a new absolute expiration time for the current refresh token.
+The expiration cannot be set higher than the maximum refresh token lifetime set in the settings.
+When called multiple times, the earliest expiration time will be used.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>absolute</code></td>
+<td>
+<p>
+<em>Number</em>. Required, the new absolute expiration time in milliseconds since the unix epoch, after which the Refresh Token will be considered invalid.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.refreshToken.setIdleExpiresAt(inactivity)`
+
+[Enterprise Customers] Sets a new idle expiration time for the current refresh token.
+The expiration cannot be set higher than the maximum absolute refresh token lifetime set in the settings.
+When called multiple times, the earliest expiration time will be used.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inactivity</code></td>
+<td>
+<p>
+<em>Number</em>. Required, the new idle inactivity time in milliseconds since the unix epoch, after which the Refresh Token will be considered invalid
+if it is not used during this period.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+## `api.session`
+
+Request changes to the current user's session.
+
+### `api.session.revoke(reason, options)`
+
+[Enterprise Customers] Revoke the current user session and mark the current login attempt as denied. This will prevent
+the end-user from completing the login flow and revoke their session. The login flow will immediately
+stop following the completion of this action and no further Actions will be executed.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reason</code></td>
+<td>
+<p>
+<em>String</em>. A human-readable explanation for rejecting the login. This may be presented
+directly in end-user interfaces.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>
+<p>
+<em>SessionRevocationOptions</em>.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>options.preserveRefreshTokens</code></td>
+<td>
+<p>
+<em>Boolean</em>. Default to false. If true, the system ends the session and keeps the refresh tokens. The application may continue to get access tokens for the duration of the refresh token lifetime.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.session.setExpiresAt(absolute)`
+
+[Enterprise Customers] Sets a new absolute expiration time for the current session.
+The expiration cannot be set higher than the maximum session lifetime set in the tenant settings.
+When called multiple times, the earliest expiration time will be used.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>absolute</code></td>
+<td>
+<p>
+<em>Number</em>. Required, the new absolute expiration time in milliseconds since the unix epoch, after which the Session will be considered invalid.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.session.setIdleExpiresAt(inactivity)`
+
+[Enterprise Customers] Sets a new idle expiration time for the current session.
+The expiration cannot be set higher than the maximum absolute session lifetime set in the tenant settings.
+When called multiple times, the earliest expiration time will be used.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inactivity</code></td>
+<td>
+<p>
+<em>Number</em>. Required, the new inactivity expiration time in milliseconds since the unix epoch, after which the Session will be considered invalid if there
+is no user interaction during this period.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.session.setCookieMode(mode)`
+
+[Private Early Access] Sets the cookie mode for the current session, allowing it to be either 'persistent' or 'non-persistent' (ephemeral).
+This determines how the session cookie is handled in the browser:
+- 'persistent': The cookie will be stored until it expires or is deleted by the user.
+- 'non-persistent' (ephemeral): The cookie will be deleted when the browser is closed.
+
+If multiple setCookieMode invocations are made, only the last one will take effect. In case 'non-persistent' is set, the cookie will be deleted when the browser is closed, however, the session itself will remain valid until its absolute or idle expiration time is reached
+or the session is revoked through our available APIs. For more information on cookie modes, please refer to our documentation.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mode</code></td>
+<td>
+<p>
+<em>The value "persistent", The value "non-persistent"</em>. Required, the cookie mode for the current session.
+Can be either 'persistent' or 'non-persistent' (ephemeral).
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.session.setMetadata(key, value)`
+
+[Private Early Access] Sets a key value pair in the metadata object of the current session.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Required, the key to set in the metadata object.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>String, null</em>. Required, the value to set for the key in the metadata object, null values will delete the provided metadata key.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.session.deleteMetadata(key)`
+
+[Private Early Access] Deletes a key in the metadata object of the current session.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. Required, the key to delete from the metadata object.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+### `api.session.evictMetadata()`
+
+[Private Early Access] Deletes all keys from the metadata object of the current session.
+
+Returns `void`.
+
+## `api.transaction`
+
+Make changes to the transaction.
+
+### `api.transaction.setMetadata(key, value)`
+
+Store or update the value in the transaction metadata for a specified key.
+
+Metadata modified using this method is updated in real-time in the
+`event.transaction.metadata` object.
+
+Returns `void`.
+
+<table class="table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>
+<p>
+<em>String</em>. The key of the property to be set.
+          </p>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+<p>
+<em>String, Number, Boolean, null</em>. The value of the property. This may be set to `null` to remove the
+metadata property.
+          </p>
+</td>
+</tr>
+</tbody>
+</table>

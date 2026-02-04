@@ -1,0 +1,108 @@
+---
+description: Learn about the send-phone-message Action trigger's event object, which provides contextual information about the trigger execution.
+title: 'Actions Triggers: send-phone-message - Event Object'
+---
+
+The `event` object for the send-phone-message Actions trigger provides contextual information about the trigger execution.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        <code>event.client</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Information about the Client with which this transaction was initiated.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.custom_domain</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the custom domain associated with the current transaction.<br/>
+        <em>Dictionary, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.message_options</code><br/>
+      </td>
+      <td>
+        Details about the message that is sent to the user.<br/>
+        <em>{ action: "enrollment", The value "second-factor-authentication"; code: string; message\_type: "sms", "voice"; recipient: string; text: string; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.request</code><br/>
+      </td>
+      <td>
+        Details about the request that initiated the transaction.<br/>
+        <em>{ geoip: { cityName?: string, undefined; continentCode?: string, undefined; countryCode?: string, undefined; countryCode3?: string, undefined; countryName?: string, undefined; latitude?: number, undefined; longitude?: number, undefined; subdivisionCode?: string, undefined; subdivisionName?: string, undefined; timeZone?: string, Dictionary, undefined; ip: string; language?: string, undefined; method: string; user\_agent?: string, undefined; }</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.security_context</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        An object containing fingerprint signatures. This will be available only if the client is using cloudflare. The JA3/JA4 fingerprint can be null or empty in some cases. The most common case is for HTTP requests because JA3 and JA4 are calculated in TLS. It can also be empty due to the Worker sending requests within the same zone or to a zone that is not proxied (or a third party).<br/>
+        <em>{ ja3?: string, undefined; ja4?: string, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.tenant</code><br/>
+      </td>
+      <td>
+        Details about the Tenant associated with the current transaction.<br/>
+        Includes the following properties:
+        <ul>
+          <li>
+            <code>id</code> <em>String</em> — The name of the tenant.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.transaction</code><br/>
+        <p><em>(Optional)</em></p>
+      </td>
+      <td>
+        Details about the current transaction.<br/>
+        <em>{ correlation\_id?: string, undefined; }, undefined</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.user</code><br/>
+      </td>
+      <td>
+        An object describing the user on whose behalf the current transaction was initiated.<br/>
+        <em>Dictionary, undefined; email\_verified: boolean; family\_name?: string, undefined; given\_name?: string, undefined; last\_password\_reset?: string, undefined; name?: string, undefined; nickname?: string, undefined; phone\_number?: string, undefined; phone\_verified?: boolean, undefined; picture?: string, Dictionary, undefined; identities?: ({ connection?: string, undefined; isSocial?: boolean, Dictionary, undefined; provider?: string, undefined; user\_id?: string, Array of dictionarys, Dictionary</em>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>event.secrets</code><br/>
+      </td>
+      <td>
+        Secret values securely associated with this Action.<br/>
+        <em>Secrets</em>
+      </td>
+    </tr>
+  </tbody>
+</table>
